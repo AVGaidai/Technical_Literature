@@ -1,2 +1,1 @@
 # Техническая литература
-# Technical-Literature
