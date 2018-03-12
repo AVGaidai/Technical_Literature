@@ -64,9 +64,7 @@ int main(int argc, char *argv[])
     while (input[i] != '\0') {
 	if (input[i] == '\t') {
 	    pos += N - (pos % N) - 1;
-	}
-	    
-	if (input[i] == ' ') {
+	} else if (input[i] == ' ') {
 	    ++spaces;
 	} else {
 	    spaces = 0;

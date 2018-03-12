@@ -23,18 +23,35 @@ int main(int argc, char *argv[])
 {
     FILE *fin, *fout;
 
-    char lch, IBUF[BUF_SIZE], OBUF[BUF_SIZE];
-    int LC = 0, MC = 0;
-    int i, j;
-    size_t SIZE = BUF_SIZE;
+    int LC = 0, MC = 0, CS = 0;
+    int lch, pch = 0;
     
     if (argc < 2) {
+        printf("%s INPUT_FNAME\n", argv[0]);
 	return -1;
     }
 
     fin = fopen(argv[1], "r");
     fout = fopen("result.c", "w");
 
+    pch = fgetc(fin);
+    if (pch == EOF) return 0;
+    
+    while ((lch = fgetc(fin)) != EOF) {
+        if (MC && pch == '*' && lch == '/') MC = 0;
+                
+        if (LC && lch == '\n') LC = 0;
+                
+        if (pch == '/' && lch == '*') MC = 1;
+        else continue;
+
+        if (pch == '/' && lch == '/') LC = 1;
+        else continue;
+
+        fputc(pch, fout);
+        pch = lch;
+    }
+/*
     lch = 0;
     while (SIZE >= 1) {
 	while (fread((void *) IBUF, sizeof(char), SIZE, fin) > 0) {
@@ -75,7 +92,8 @@ int main(int argc, char *argv[])
 	}
 	SIZE /= 2;
     }
-    
+*/
+    printf("See \"result.c\" file.\n");
     fclose(fin), fclose(fout);
 
     return 0;
